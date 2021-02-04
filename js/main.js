@@ -48,14 +48,6 @@ const APARTMENT_DATA = {
     'http://o0.github.io/assets/images/tokyo/hotel3.jpg'],
 }
 
-// const APARTMENT_TYPES = ['palace', 'flat', 'house', 'bungalow'];
-// const APARTMENT_CHECK_TIMES = ['12:00', '13:00', '14:00'];
-// const APARTMENT_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-// const APARTMENT_PHOTOS = [
-//   'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
-//   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
-//   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-
 const createApatment = function(data) {
   const apartmentObject = {};
   const {types, checkTimeOptions, features, photos} = data;
