@@ -33,19 +33,6 @@ const getRandomFloat = function(min, max, signs = 0) {
   return parseFloat((Math.random() * (max - min) + min).toFixed(signs));
 }
 
-// Случайное перемешивание массива
-// https://habr.com/ru/post/358094/
-const shuffleArr = function(arr){
-  let j, temp;
-  for (let i = arr.length - 1; i > 0; i--) {
-    j = Math.floor(Math.random()*(i + 1));
-    temp = arr[j];
-    arr[j] = arr[i];
-    arr[i] = temp;
-  }
-  return arr;
-}
-
 /*
 * Модуль 3, Генерация данных
 */
@@ -73,11 +60,6 @@ const createApatment = function(data) {
   const apartmentObject = {};
   const {types, checkTimeOptions, features, photos} = data;
 
-  // Функция выбора случайного элемента массива
-  const getRandomElementFromArray = function (arr) {
-    return arr[_.random(0, arr.length - 1)];
-  }
-
   apartmentObject.author = {
     avatar: `img/avatars/user0${_.random(1, 8)}.png`,
   };
@@ -93,19 +75,19 @@ const createApatment = function(data) {
     rooms: _.random(1, 5),
     guests: _.random(1, 8),
     description: 'Very useful description with a lot of information.',
-    type: getRandomElementFromArray(types),
-    checkin: getRandomElementFromArray(checkTimeOptions),
-    checkout: getRandomElementFromArray(checkTimeOptions),
-    features: _.slice(shuffleArr(features), 0, _.random(0, features.length - 1)),
-    photos: _.slice(photos, 0, _.random(0, photos.length - 1)),
+    type: _.sample(types),
+    checkin: _.sample(checkTimeOptions),
+    checkout: _.sample(checkTimeOptions),
+    features: _.sampleSize(features, _.random(0, _.size(features))),
+    photos: _.sampleSize(photos, _.random(0, _.size(photos))),
     address: `${apartmentObject.location.x}, ${apartmentObject.location.y}`,
   };
 
-  console.log(apartmentObject.offer.address);
+  console.log(apartmentObject.offer.features);
   return apartmentObject;
 }
 
 const apartments = [];
 for (let i = 0; i < APARTMENT_COUNTER; i++) {
   apartments.push(createApatment(APARTMENT_DATA));
-};
+}
