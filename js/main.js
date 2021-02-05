@@ -75,7 +75,6 @@ const createApatment = function(data) {
     address: `${apartmentObject.location.x}, ${apartmentObject.location.y}`,
   };
 
-  console.log(apartmentObject.offer.features);
   return apartmentObject;
 }
 
