@@ -1,11 +1,6 @@
 'use strict';
 
-/*
-* Модуль 2, утилитарные фнукции
-* Как вариант, заменить на lodash
-*/
-
-const getRandomIntInclusive = function (min, max) {
+const getRandomIntInclusive = (min, max) => {
   if (typeof max !== 'number' || typeof min !== 'number') return 'error';
   if (min < 0) return 'error';
 
@@ -17,15 +12,13 @@ const getRandomIntInclusive = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-
-const getRandomFloat = function(min, max, signs = 0) {
+const getRandomFloat = (min, max, signs = 0) => {
   if (typeof max !== 'number' || typeof min !== 'number' || typeof signs !== 'number') return 'error';
   if (min < 0 || min > max) return 'error';
   if (min === max) return min;
 
   signs = parseInt(signs);
 
-  // если надо целое, то отдельная функция
   if (signs === 0) {
     return getRandomIntInclusive(min, max);
   }
@@ -33,9 +26,26 @@ const getRandomFloat = function(min, max, signs = 0) {
   return parseFloat((Math.random() * (max - min) + min).toFixed(signs));
 }
 
-/*
-* Модуль 3, Генерация данных
-*/
+const getRandomElement = arr => arr[getRandomIntInclusive(0, arr.length - 1)];
+
+const shuffleArray = arr => {
+  let j, temp;
+  for (let i = arr.length - 1; i > 0; i--) {
+    j = Math.floor(Math.random()*(i + 1));
+    temp = arr[j];
+    arr[j] = arr[i];
+    arr[i] = temp;
+  }
+  return arr;
+}
+
+const getRandomElements = arr => shuffleArray(arr).slice(0, getRandomIntInclusive(0, arr.length));
+
+const fillArray = (arr, cb, data, count) => {
+  for (let i = 0; i < count; i++) {
+    arr.push(cb(data));
+  }
+}
 
 const APARTMENT_COUNTER = 10;
 const APARTMENT_DATA = {
@@ -48,12 +58,12 @@ const APARTMENT_DATA = {
     'http://o0.github.io/assets/images/tokyo/hotel3.jpg'],
 }
 
-const createApatment = function(data) {
+const createApartment = data => {
   const apartmentObject = {};
   const {types, checkTimeOptions, features, photos} = data;
 
   apartmentObject.author = {
-    avatar: `img/avatars/user0${_.random(1, 8)}.png`,
+    avatar: `img/avatars/user0${getRandomIntInclusive(1, 8)}.png`,
   };
 
   apartmentObject.location = {
@@ -63,22 +73,20 @@ const createApatment = function(data) {
 
   apartmentObject.offer = {
     title: 'Cozy Home',
-    price: _.random(1, 9999),
-    rooms: _.random(1, 5),
-    guests: _.random(1, 8),
+    price: getRandomIntInclusive(1, 9999),
+    rooms: getRandomIntInclusive(1, 5),
+    guests: getRandomIntInclusive(1, 8),
     description: 'Very useful description with a lot of information.',
-    type: _.sample(types),
-    checkin: _.sample(checkTimeOptions),
-    checkout: _.sample(checkTimeOptions),
-    features: _.sampleSize(features, _.random(0, _.size(features))),
-    photos: _.sampleSize(photos, _.random(0, _.size(photos))),
+    type: getRandomElement(types),
+    checkin: getRandomElement(checkTimeOptions),
+    checkout: getRandomElement(checkTimeOptions),
+    features: getRandomElements(features),
+    photos: getRandomElements(photos),
     address: `${apartmentObject.location.x}, ${apartmentObject.location.y}`,
   };
 
   return apartmentObject;
 }
 
-const apartments = [];
-for (let i = 0; i < APARTMENT_COUNTER; i++) {
-  apartments.push(createApatment(APARTMENT_DATA));
-}
+let apartments = [];
+fillArray(apartments, createApartment, APARTMENT_DATA, APARTMENT_COUNTER);
