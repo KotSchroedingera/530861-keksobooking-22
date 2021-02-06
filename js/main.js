@@ -88,5 +88,5 @@ const createApartment = data => {
   return apartmentObject;
 }
 
-let apartments = [];
+const apartments = [];
 fillArray(apartments, createApartment, APARTMENT_DATA, APARTMENT_COUNTER);
