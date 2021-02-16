@@ -85,9 +85,6 @@ apartmentsArray.forEach(apartment => {
 
   });
 
-
-
-
   apartmentsHTML.appendChild(offer);
 
 });
