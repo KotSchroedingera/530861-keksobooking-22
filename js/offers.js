@@ -65,7 +65,24 @@ apartmentsArray.forEach(apartment => {
         featuresItem.classList.add('popup__feature--conditioner');
         featuresList.appendChild(featuresItem);
         break;
-    }
+    };
+
+    offer.querySelector('.popup__description').textContent = apartment.offer.description;
+
+    const photos = offer.querySelector('.popup__photos');
+    photos.innerHTML = '';
+    apartment.offer.photos.forEach(photo => {
+      const photoItem = document.createElement('img');
+      photoItem.classList.add('popup__photo');
+      photoItem.width = '45';
+      photoItem.height = '40';
+      photoItem.alt = 'Фотография жилья';
+      photoItem.src = photo;
+      photos.appendChild(photoItem);
+    });
+
+    offer.querySelector('.popup__avatar').src = apartment.author.avatar;
+
   });
 
 
@@ -75,5 +92,4 @@ apartmentsArray.forEach(apartment => {
 
 });
 
-console.log(apartmentsHTML);
 export {apartmentsHTML};
