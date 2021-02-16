@@ -47,9 +47,9 @@ const createApartment = data => {
 }
 
 const APARTMENT_COUNTER = 10;
-const apartments = [];
-fillArray(apartments, createApartment, APARTMENT_DATA, APARTMENT_COUNTER);
+const apartmentsArray = [];
+fillArray(apartmentsArray, createApartment, APARTMENT_DATA, APARTMENT_COUNTER);
 
 export {
-  apartments
+  apartmentsArray
 };
