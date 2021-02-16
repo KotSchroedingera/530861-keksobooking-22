@@ -47,6 +47,14 @@ const fillArray = (arr, cb, data, count) => {
   }
 }
 
+const changeElementContent = (elem, content = '', type = 'text') => {
+  if (!content) {
+    elem.innerHTML = '';
+  }
+}
+
+changeElementContent(document.querySelector('body'));
+
 export {
   getRandomIntInclusive,
   getRandomFloat,
