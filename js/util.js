@@ -47,13 +47,20 @@ const fillArray = (arr, cb, data, count) => {
   }
 }
 
-const changeElementContent = (elem, content = '', type = 'text') => {
-  if (!content) {
-    elem.innerHTML = '';
+const changeElementContent = (parent, selector, content, type = 'text') => {
+  if (typeof content === 'undefined') return;
+  switch (type) {
+    case 'text':
+      parent.querySelector(selector).textContent = content;
+      break;
+    case 'html':
+      parent.querySelector(selector).innerHTML = content;
+      break;
+    case 'src':
+      parent.querySelector(selector).src = content;
+      break;
   }
 }
-
-changeElementContent(document.querySelector('body'));
 
 export {
   getRandomIntInclusive,
@@ -61,6 +68,7 @@ export {
   getRandomElement,
   getRandomElements,
   shuffleArray,
-  fillArray
+  fillArray,
+  changeElementContent
 };
 

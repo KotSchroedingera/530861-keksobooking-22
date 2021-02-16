@@ -1,6 +1,7 @@
 'use strict';
 
 import {apartmentsArray} from './data.js';
+import { changeElementContent } from './util.js';
 
 const apartmentsHTML = document.createDocumentFragment();
 const cardTemplate = document.querySelector('#card').content;
@@ -9,11 +10,13 @@ apartmentsArray.forEach(apartment => {
 
   const offer = cardTemplate.cloneNode(true);
 
-  offer.querySelector('.popup__title').textContent = apartment.offer.title;
-
-  offer.querySelector('.popup__text--address').textContent = apartment.offer.address;
-
-  offer.querySelector('.popup__text--price').innerHTML = `${apartment.offer.price} <span>₽/ночь</span>`;
+  changeElementContent(offer, '.popup__title', apartment.offer.title);
+  changeElementContent(offer, '.popup__text--address', apartment.offer.address);
+  changeElementContent(offer, '.popup__text--price', `${apartment.offer.price} <span>₽/ночь</span>`, 'html');
+  changeElementContent(offer, '.popup__text--capacity', `${apartment.offer.rooms} комнаты для ${apartment.offer.guests} гостей`);
+  changeElementContent(offer, '.popup__text--time', `Заезд после ${apartment.offer.checkin}, выезд до ${apartment.offer.checkout}`);
+  changeElementContent(offer, '.popup__description', apartment.offer.description);
+  changeElementContent(offer, '.popup__avatar', apartment.author.avatar, 'src');
 
   const typeElement = offer.querySelector('.popup__type');
   switch (apartment.offer.type) {
@@ -30,10 +33,6 @@ apartmentsArray.forEach(apartment => {
       typeElement.textContent = 'Дворец';
       break;
   }
-
-  offer.querySelector('.popup__text--capacity').textContent = `${apartment.offer.rooms} комнаты для ${apartment.offer.guests} гостей`;
-
-  offer.querySelector('.popup__text--time').textContent = `Заезд после ${apartment.offer.checkin}, выезд до ${apartment.offer.checkout}`;
 
   const featuresList = offer.querySelector('.popup__features');
   featuresList.textContent = '';
@@ -67,8 +66,6 @@ apartmentsArray.forEach(apartment => {
         break;
     };
 
-    offer.querySelector('.popup__description').textContent = apartment.offer.description;
-
     const photos = offer.querySelector('.popup__photos');
     photos.innerHTML = '';
     apartment.offer.photos.forEach(photo => {
@@ -81,7 +78,6 @@ apartmentsArray.forEach(apartment => {
       photos.appendChild(photoItem);
     });
 
-    offer.querySelector('.popup__avatar').src = apartment.author.avatar;
 
   });
 
