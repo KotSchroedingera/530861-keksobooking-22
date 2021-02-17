@@ -66,7 +66,7 @@ apartmentsArray.forEach(apartment => {
           featuresItem.classList.add('popup__feature--conditioner');
           featuresList.appendChild(featuresItem);
           break;
-      };
+      }
     });
   }
 
