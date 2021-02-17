@@ -62,6 +62,15 @@ const changeElementContent = (parent, selector, content, type = 'text') => {
   }
 }
 
+const isArrayEmpty = array => array.length === 0 ? true : false;
+
+const removeNodeIfEmpty = (parent, selector, contentArray) => {
+  const elem = parent.querySelector(selector);
+  if (isArrayEmpty(contentArray)) {
+    elem.remove();
+  } 
+}
+
 export {
   getRandomIntInclusive,
   getRandomFloat,
@@ -69,6 +78,8 @@ export {
   getRandomElements,
   shuffleArray,
   fillArray,
-  changeElementContent
+  changeElementContent,
+  isArrayEmpty,
+  removeNodeIfEmpty
 };
 

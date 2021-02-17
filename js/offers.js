@@ -1,7 +1,7 @@
 'use strict';
 
 import {apartmentsArray} from './data.js';
-import { changeElementContent } from './util.js';
+import { changeElementContent, removeNodeIfEmpty } from './util.js';
 
 const apartmentsHTML = document.createDocumentFragment();
 const cardTemplate = document.querySelector('#card').content;
@@ -34,38 +34,44 @@ apartmentsArray.forEach(apartment => {
       break;
   }
 
-  const featuresList = offer.querySelector('.popup__features');
-  featuresList.textContent = '';
-  apartment.offer.features.forEach(feature => {
-    const featuresItem = document.createElement('li');
-    featuresItem.classList.add('popup__feature');
-    switch (feature) {
-      case 'wifi':
-        featuresItem.classList.add('popup__feature--wifi');
-        featuresList.appendChild(featuresItem);
-        break;
-      case 'dishwasher':
-        featuresItem.classList.add('popup__feature--dishwasher');
-        featuresList.appendChild(featuresItem);
-        break;
-      case 'parking':
-        featuresItem.classList.add('popup__feature--parking');
-        featuresList.appendChild(featuresItem);
-        break;
-      case 'washer':
-        featuresItem.classList.add('popup__feature--washer');
-        featuresList.appendChild(featuresItem);
-        break;
-      case 'elevator':
-        featuresItem.classList.add('popup__feature--elevator');
-        featuresList.appendChild(featuresItem);
-        break;
-      case 'conditioner':
-        featuresItem.classList.add('popup__feature--conditioner');
-        featuresList.appendChild(featuresItem);
-        break;
-    };
+  removeNodeIfEmpty(offer, '.popup__features', apartment.offer.features);
+  if (offer.querySelector('.popup__features')) {
+    const featuresList = offer.querySelector('.popup__features');
+    featuresList.textContent = '';
+    apartment.offer.features.forEach(feature => {
+      const featuresItem = document.createElement('li');
+      featuresItem.classList.add('popup__feature');
+      switch (feature) {
+        case 'wifi':
+          featuresItem.classList.add('popup__feature--wifi');
+          featuresList.appendChild(featuresItem);
+          break;
+        case 'dishwasher':
+          featuresItem.classList.add('popup__feature--dishwasher');
+          featuresList.appendChild(featuresItem);
+          break;
+        case 'parking':
+          featuresItem.classList.add('popup__feature--parking');
+          featuresList.appendChild(featuresItem);
+          break;
+        case 'washer':
+          featuresItem.classList.add('popup__feature--washer');
+          featuresList.appendChild(featuresItem);
+          break;
+        case 'elevator':
+          featuresItem.classList.add('popup__feature--elevator');
+          featuresList.appendChild(featuresItem);
+          break;
+        case 'conditioner':
+          featuresItem.classList.add('popup__feature--conditioner');
+          featuresList.appendChild(featuresItem);
+          break;
+      };
+    });
+  }
 
+  removeNodeIfEmpty(offer, '.popup__photos', apartment.offer.photos);
+  if (offer.querySelector('.popup__photos')) {
     const photos = offer.querySelector('.popup__photos');
     photos.innerHTML = '';
     apartment.offer.photos.forEach(photo => {
@@ -77,9 +83,7 @@ apartmentsArray.forEach(apartment => {
       photoItem.src = photo;
       photos.appendChild(photoItem);
     });
-
-
-  });
+  }
 
   apartmentsHTML.appendChild(offer);
 

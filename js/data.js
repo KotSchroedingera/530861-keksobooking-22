@@ -31,7 +31,7 @@ const createApartment = data => {
 
   apartmentObject.offer = {
     title: 'Cozy Home',
-    price: getRandomIntInclusive(1, 9999),
+    price: getRandomIntInclusive(1000, 9999),
     rooms: getRandomIntInclusive(1, 5),
     guests: getRandomIntInclusive(1, 8),
     description: 'Very useful description with a lot of information.',
