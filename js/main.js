@@ -1,7 +1,12 @@
 'use strict';
 
-import {
-  apartments
-} from './data.js';
+import {apartmentsHTML} from './offers.js';
 
-alert(apartments);
+const offersList = document.querySelector('#map-canvas');
+offersList.appendChild(apartmentsHTML);
+
+
+
+
+
+

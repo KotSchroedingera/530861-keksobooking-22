@@ -31,7 +31,7 @@ const createApartment = data => {
 
   apartmentObject.offer = {
     title: 'Cozy Home',
-    price: getRandomIntInclusive(1, 9999),
+    price: getRandomIntInclusive(1000, 9999),
     rooms: getRandomIntInclusive(1, 5),
     guests: getRandomIntInclusive(1, 8),
     description: 'Very useful description with a lot of information.',
@@ -47,9 +47,9 @@ const createApartment = data => {
 }
 
 const APARTMENT_COUNTER = 10;
-const apartments = [];
-fillArray(apartments, createApartment, APARTMENT_DATA, APARTMENT_COUNTER);
+const apartmentsArray = [];
+fillArray(apartmentsArray, createApartment, APARTMENT_DATA, APARTMENT_COUNTER);
 
 export {
-  apartments
+  apartmentsArray
 };

@@ -47,12 +47,39 @@ const fillArray = (arr, cb, data, count) => {
   }
 }
 
+const changeElementContent = (parent, selector, content, type = 'text') => {
+  if (typeof content === 'undefined') return;
+  switch (type) {
+    case 'text':
+      parent.querySelector(selector).textContent = content;
+      break;
+    case 'html':
+      parent.querySelector(selector).innerHTML = content;
+      break;
+    case 'src':
+      parent.querySelector(selector).src = content;
+      break;
+  }
+}
+
+const isArrayEmpty = array => array.length === 0 ? true : false;
+
+const removeNodeIfEmpty = (parent, selector, contentArray) => {
+  const elem = parent.querySelector(selector);
+  if (isArrayEmpty(contentArray)) {
+    elem.remove();
+  } 
+}
+
 export {
   getRandomIntInclusive,
   getRandomFloat,
   getRandomElement,
   getRandomElements,
   shuffleArray,
-  fillArray
+  fillArray,
+  changeElementContent,
+  isArrayEmpty,
+  removeNodeIfEmpty
 };
 
