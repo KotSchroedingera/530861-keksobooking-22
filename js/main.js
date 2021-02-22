@@ -1,9 +1,9 @@
 'use strict';
 
-import {apartmentsHTML} from './offers.js';
+import './map.js';
 
-const offersList = document.querySelector('#map-canvas');
-offersList.appendChild(apartmentsHTML);
+
+
 
 
 
