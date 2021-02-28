@@ -68,7 +68,7 @@ const removeNodeIfEmpty = (parent, selector, contentArray) => {
   const elem = parent.querySelector(selector);
   if (isArrayEmpty(contentArray)) {
     elem.remove();
-  } 
+  }
 }
 
 export {
