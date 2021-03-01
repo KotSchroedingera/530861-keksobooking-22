@@ -14,20 +14,40 @@ document.querySelector('.ad-form__reset').addEventListener('click', evt => {
   resetApp();
 });
 
+const showMessage = (id, closeButton) => {
+  const messageTemplate = document.querySelector(`#${id}`).content;
+  const message = messageTemplate.cloneNode(true);
+  document.querySelector('main').append(message);
+  
+  const messageShown = document.querySelector(`.${id}`);
+  document.addEventListener('keyup', evt => {
+    if (evt.key === 'Escape') messageShown.remove();
+  });
+  document.addEventListener('click', () => {
+    messageShown.remove();
+  });
+  if (closeButton) {
+    document.querySelector(`.${id}__button`).addEventListener('click', () => {
+      messageShown.remove();
+    });
+  }
+}
+
 adForm.addEventListener('submit', evt => {
   evt.preventDefault();
   fetch('https://22.javascript.pages.academy/keksobooking', {
     method: 'post',
-    body: new FormData(adForm),
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    }
+    body: new FormData(evt.target),
   })
-    .then(resp => {
-      if (resp.ok) {
+    .then(res => {
+      if (res.ok) {
         resetApp();
+        showMessage('success');
       } else {
-
+        throw new Error;
       }
+    })
+    .catch(() => {
+      showMessage('error', true);
     });
 });

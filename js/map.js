@@ -69,13 +69,7 @@ const mainPin = L.marker([mapInitialState.x, mapInitialState.y], {
   address.value = `${evt.sourceTarget._latlng.lat.toFixed(5)}, ${evt.sourceTarget._latlng.lng.toFixed(5)}`;
 }).on('drag', evt => {
   address.value = `${evt.latlng.lat.toFixed(5)}, ${evt.latlng.lng.toFixed(5)}`;
-});
-
-const createPin = pin => {
-  pin.addTo(map);
-};
-
-createPin(mainPin);
+}).addTo(map);
 
 export {
   adForm,
@@ -86,6 +80,5 @@ export {
   mapInitialState,
   address,
   mainPinIcon,
-  mainPin,
-  createPin
+  mainPin
 }

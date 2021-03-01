@@ -5,12 +5,12 @@ import { createApartmentsHTML } from './create-offers.js';
 
 if (!adForm.classList.contains('ad-form--disabled')) {
   fetch('https://22.javascript.pages.academy/keksobooking/data')
-    .then(resp => {
-      if (resp.ok) {
-        return resp.json();
+    .then(res => {
+      if (res.ok) {
+        return res.json();
       }
       blockForm(mapFilters);
-      throw new Error(`Ошибка ${resp.status}: не удалось загрузить объявления. Однако, можно попробовать отправить своё.`);
+      throw new Error(`Ошибка ${res.status}: не удалось загрузить объявления. Однако, можно попробовать отправить своё.`);
     })
     .then(json => {
       let i = 0;
