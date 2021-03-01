@@ -14,17 +14,20 @@ document.querySelector('.ad-form__reset').addEventListener('click', evt => {
   resetApp();
 });
 
-offerForm.addEventListener('submit', evt => {
+adForm.addEventListener('submit', evt => {
   evt.preventDefault();
   fetch('https://22.javascript.pages.academy/keksobooking', {
     method: 'post',
-    body: new FormData(offerForm),
+    body: new FormData(adForm),
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    }
   })
     .then(resp => {
       if (resp.ok) {
         resetApp();
       } else {
-        
+
       }
     });
 });
