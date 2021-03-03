@@ -3,6 +3,8 @@
 import { adForm, blockForm, mapFilters, pinIcon, map } from './map.js';
 import { createApartmentsHTML } from './create-offers.js';
 
+const OFFERS_AMOUNT = 10;
+
 if (!adForm.classList.contains('ad-form--disabled')) {
   fetch('https://22.javascript.pages.academy/keksobooking/data')
     .then(res => {
@@ -14,8 +16,8 @@ if (!adForm.classList.contains('ad-form--disabled')) {
     })
     .then(json => {
       let i = 0;
-      const apartmentsHTML = createApartmentsHTML(json);
-      json.forEach(apartment => {
+      const apartmentsHTML = createApartmentsHTML(json.slice(0, OFFERS_AMOUNT));
+      json.slice(0, OFFERS_AMOUNT).forEach(apartment => {
         L.marker([apartment.location.lat, apartment.location.lng], {
           icon: pinIcon,
         }).addTo(map)
