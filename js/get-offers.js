@@ -11,7 +11,7 @@ if (!adForm.classList.contains('ad-form--disabled')) {
   let currentJSON;
   let markersLayer;
 
-  const addMarkers = (json, map) => {
+  const addMarkers = json => {
     let i = 0;
     const markers = [];
     const apartmentsHTML = createApartmentsHTML(json.slice(0, OFFERS_AMOUNT));
@@ -35,84 +35,89 @@ if (!adForm.classList.contains('ad-form--disabled')) {
     })
 
     .then(json => {
-      addMarkers(json, map);
-      currentJSON = json.slice();
+      addMarkers(json);
+      return json;
     })
 
     .then(json => {
 
-      const typesElement = mapFilters.querySelector('[name=housing-type]');
-      const types = [
-        'any',
-        'palace',
-        'flat',
-        'house',
-        'bungalow'
-      ]
-      const pricesElement = mapFilters.querySelector('[name=housing-price]');
-      const prices = [
-        'any',
-        'middle',
-        'low',
-        'high'
-      ];
-      const roomsElement = mapFilters.querySelector('[name=housing-rooms]');
-      const rooms = [
-        'any',
-        '1',
-        '2',
-        '3'
-      ];
-      const guestsElement = mapFilters.querySelector('[name=housing-guests]');
-      const guests = [
-        'any',
-        '0',
-        '1',
-        '2'
-      ];
-      const featuresElement = mapFilters.querySelector('[name=housing-guests]');
+      const type = mapFilters.querySelector('[name=housing-type]');
+      const price = mapFilters.querySelector('[name=housing-price]');
+      const prices = {
+        'middle' : {
+          'min' : 10000,
+          'max' : 49999,
+        },
+        'low' : {
+          'min': 0,
+          'max': 9999,
+        },
+        'high' : {
+          'min' : 50000,
+          'max' : Infinity,
+        },
+      };
+      const rooms = mapFilters.querySelector('[name=housing-rooms]');
+      const guests = mapFilters.querySelector('[name=housing-guests]');
+
       const features = [
-        'any',
         'wifi',
         'dishwasher',
-        'parking',
-        'washer',
         'elevator',
-        'conditioner'
-      ];
+        'parking',
+        'conditioner',
+        'washer',
+      ]
 
       mapFilters.addEventListener('change', evt => {
         markersLayer.remove();
+        console.log(evt.target.name, evt.target.value);
 
-        const filterName = evt.target.name;
-        const filterValue = evt.target.value;
-        console.log(filterName, filterValue);
+        const newJSON = json.slice();
+        newJSON.forEach(elem => {
+          elem.isAppropriate = true;
+        });
 
-        const newJSON = [];
-
-        const applyFilter = param => {
-
+        if (type.value !== 'any') {
+          newJSON.forEach(elem => {
+            if (elem.offer.type !== type.value) {
+              elem.isAppropriate = false;
+            }
+          });
         }
-
-        if (filterName === 'housing-type') {
-          switch (filterValue) {
-            case 'palace':
-              currentJSON.forEach(elem => {
-                if (elem.offer.type === 'palace') newJSON.push(elem);
-              });
-              addMarkers(newJSON, map);
-              currentJSON = newJSON.slice();
-              break;
-              case 'flat':
-                currentJSON.forEach(elem => {
-                  if (elem.offer.type === 'flat') newJSON.push(elem);
-                });
-                addMarkers(newJSON, map);
-                currentJSON = newJSON.slice();
+        if (price.value !== 'any') {
+          newJSON.forEach(elem => {
+            switch (price.value) {
+              case 'low':
+                if (elem.offer.price > prices.low.max) elem.isAppropriate = false;
                 break;
-          }
+              case 'middle':
+                if ((elem.offer.price < prices.middle.min) || (elem.offer.price > prices.middle.max)) elem.isAppropriate = false;
+                break;
+              case 'high':
+                if (elem.offer.price < prices.high.min) elem.isAppropriate = false;
+                break;
+            }
+          });
         }
-      })
+        if (rooms.value !== 'any') {
+          newJSON.forEach(elem => {
+            if (elem.offer.rooms.toString() !== rooms.value) elem.isAppropriate = false;
+          });
+        }
+        if (guests.value !== 'any') {
+          newJSON.forEach(elem => {
+            if (elem.offer.guests.toString() !== guests.value) elem.isAppropriate = false;
+          });
+        }
+        if (wifi.checked) {
+          newJSON.forEach(elem => {
+            if (!elem.offer.features.some(feature => feature === 'wifi')) elem.isAppropriate = false;
+          });
+        }
+        console.log(newJSON[0]);
+        addMarkers(newJSON.filter(elem => elem.isAppropriate === true));
+      });
     })
     .catch(err => {
       const errorHTML = `<div style="
