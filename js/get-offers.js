@@ -66,7 +66,7 @@ if (!adForm.classList.contains('ad-form--disabled')) {
         'washer',
       ]
 
-      mapFilters.addEventListener('change', evt => {
+      mapFilters.addEventListener('change', () => {
         markersLayer.remove();
 
         const newJSON = json.slice();
