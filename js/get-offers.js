@@ -69,13 +69,13 @@ if (!adForm.classList.contains('ad-form--disabled')) {
       mapFilters.addEventListener('change', () => {
         markersLayer.remove();
 
-        const newJSON = json.slice();
-        newJSON.forEach(elem => {
+        const filteredJSON = json.slice();
+        filteredJSON.forEach(elem => {
           elem.isAppropriate = true;
         });
 
         if (type.value !== 'any') {
-          newJSON.forEach(elem => {
+          filteredJSON.forEach(elem => {
             if (elem.offer.type !== type.value) {
               elem.isAppropriate = false;
             }
@@ -83,7 +83,7 @@ if (!adForm.classList.contains('ad-form--disabled')) {
         }
 
         if (price.value !== 'any') {
-          newJSON.forEach(elem => {
+          filteredJSON.forEach(elem => {
             switch (price.value) {
               case 'low':
                 if (elem.offer.price > prices.low.max) elem.isAppropriate = false;
@@ -99,32 +99,32 @@ if (!adForm.classList.contains('ad-form--disabled')) {
         }
 
         if (rooms.value !== 'any') {
-          newJSON.forEach(elem => {
+          filteredJSON.forEach(elem => {
             if (elem.offer.rooms.toString() !== rooms.value) elem.isAppropriate = false;
           });
         }
 
         if (guests.value !== 'any') {
-          newJSON.forEach(elem => {
+          filteredJSON.forEach(elem => {
             if (elem.offer.guests.toString() !== guests.value) elem.isAppropriate = false;
           });
         }
 
         if (document.querySelector('#filter-wifi').checked) {
-          newJSON.forEach(elem => {
+          filteredJSON.forEach(elem => {
             if (!elem.offer.features.some(feature => feature === 'wifi')) elem.isAppropriate = false;
           });
         }
 
         features.forEach(filterValue => {
           if (document.querySelector(`#filter-${filterValue}`).checked) {
-            newJSON.forEach(elem => {
+            filteredJSON.forEach(elem => {
               if (!elem.offer.features.some(feature => feature === filterValue)) elem.isAppropriate = false;
             });
           }
         });
 
-        addMarkers(newJSON.filter(elem => elem.isAppropriate === true));
+        addMarkers(filteredJSON.filter(elem => elem.isAppropriate === true));
       });
     })
 
