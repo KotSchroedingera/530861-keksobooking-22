@@ -7,8 +7,6 @@ const OFFERS_AMOUNT = 10;
 
 if (!adForm.classList.contains('ad-form--disabled')) {
 
-  let initialJSON;
-  let currentJSON;
   let markersLayer;
 
   const addMarkers = json => {
@@ -59,7 +57,6 @@ if (!adForm.classList.contains('ad-form--disabled')) {
       };
       const rooms = mapFilters.querySelector('[name=housing-rooms]');
       const guests = mapFilters.querySelector('[name=housing-guests]');
-
       const features = [
         'wifi',
         'dishwasher',
@@ -71,7 +68,6 @@ if (!adForm.classList.contains('ad-form--disabled')) {
 
       mapFilters.addEventListener('change', evt => {
         markersLayer.remove();
-        console.log(evt.target.name, evt.target.value);
 
         const newJSON = json.slice();
         newJSON.forEach(elem => {
@@ -85,6 +81,7 @@ if (!adForm.classList.contains('ad-form--disabled')) {
             }
           });
         }
+
         if (price.value !== 'any') {
           newJSON.forEach(elem => {
             switch (price.value) {
@@ -100,25 +97,37 @@ if (!adForm.classList.contains('ad-form--disabled')) {
             }
           });
         }
+
         if (rooms.value !== 'any') {
           newJSON.forEach(elem => {
             if (elem.offer.rooms.toString() !== rooms.value) elem.isAppropriate = false;
           });
         }
+
         if (guests.value !== 'any') {
           newJSON.forEach(elem => {
             if (elem.offer.guests.toString() !== guests.value) elem.isAppropriate = false;
           });
         }
-        if (wifi.checked) {
+
+        if (document.querySelector('#filter-wifi').checked) {
           newJSON.forEach(elem => {
             if (!elem.offer.features.some(feature => feature === 'wifi')) elem.isAppropriate = false;
           });
         }
-        console.log(newJSON[0]);
+
+        features.forEach(filterValue => {
+          if (document.querySelector(`#filter-${filterValue}`).checked) {
+            newJSON.forEach(elem => {
+              if (!elem.offer.features.some(feature => feature === filterValue)) elem.isAppropriate = false;
+            });
+          }
+        });
+
         addMarkers(newJSON.filter(elem => elem.isAppropriate === true));
       });
     })
+
     .catch(err => {
       const errorHTML = `<div style="
       position: fixed;
