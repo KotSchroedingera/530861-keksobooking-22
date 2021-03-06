@@ -6,9 +6,7 @@ import { createApartmentsHTML } from './create-offers.js';
 const OFFERS_AMOUNT = 10;
 
 if (!adForm.classList.contains('ad-form--disabled')) {
-
   let markersLayer;
-
   const addMarkers = json => {
     let i = 0;
     const markers = [];
@@ -22,23 +20,15 @@ if (!adForm.classList.contains('ad-form--disabled')) {
     });
     markersLayer = L.layerGroup(markers).addTo(map);
   }
-
   fetch('https://22.javascript.pages.academy/keksobooking/data')
     .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
+      if (res.ok) return res.json();
       blockForm(mapFilters);
       throw new Error(`Ошибка ${res.status}: не удалось загрузить объявления. Однако, можно попробовать отправить своё.`);
     })
-
     .then(json => {
       addMarkers(json);
-      return json;
-    })
-
-    .then(json => {
-
+      const FILTER_ANY_ID = 'any';
       const type = mapFilters.querySelector('[name=housing-type]');
       const price = mapFilters.querySelector('[name=housing-price]');
       const prices = {
@@ -65,24 +55,23 @@ if (!adForm.classList.contains('ad-form--disabled')) {
         'conditioner',
         'washer',
       ]
-
       mapFilters.addEventListener('change', () => {
         markersLayer.remove();
-
-        const filteredJSON = json.slice();
-        filteredJSON.forEach(elem => {
+        const filteredJSON = json.map(elem => {
           elem.isAppropriate = true;
+          return elem;
         });
-
-        if (type.value !== 'any') {
+        const isFilterActive = (filterName => {
+          return (filterName.value !== FILTER_ANY_ID);
+        });
+        if (isFilterActive(type)) {
           filteredJSON.forEach(elem => {
             if (elem.offer.type !== type.value) {
               elem.isAppropriate = false;
             }
           });
         }
-
-        if (price.value !== 'any') {
+        if (isFilterActive(price)) {
           filteredJSON.forEach(elem => {
             switch (price.value) {
               case 'low':
@@ -97,25 +86,16 @@ if (!adForm.classList.contains('ad-form--disabled')) {
             }
           });
         }
-
-        if (rooms.value !== 'any') {
+        if (isFilterActive(rooms)) {
           filteredJSON.forEach(elem => {
             if (elem.offer.rooms.toString() !== rooms.value) elem.isAppropriate = false;
           });
         }
-
-        if (guests.value !== 'any') {
+        if (isFilterActive(guests)) {
           filteredJSON.forEach(elem => {
             if (elem.offer.guests.toString() !== guests.value) elem.isAppropriate = false;
           });
         }
-
-        if (document.querySelector('#filter-wifi').checked) {
-          filteredJSON.forEach(elem => {
-            if (!elem.offer.features.some(feature => feature === 'wifi')) elem.isAppropriate = false;
-          });
-        }
-
         features.forEach(filterValue => {
           if (document.querySelector(`#filter-${filterValue}`).checked) {
             filteredJSON.forEach(elem => {
@@ -123,11 +103,9 @@ if (!adForm.classList.contains('ad-form--disabled')) {
             });
           }
         });
-
         addMarkers(filteredJSON.filter(elem => elem.isAppropriate === true));
       });
     })
-
     .catch(err => {
       const errorHTML = `<div style="
       position: fixed;
