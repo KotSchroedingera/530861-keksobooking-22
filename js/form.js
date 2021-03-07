@@ -18,9 +18,14 @@ const validatePrice = () => {
       price.min = pricesList[key];
     }
   }
-  const priceValidationMessage = `Для типа '${type.selectedOptions[0].innerText}' цена от ${price.min} руб.`;
-  price.setCustomValidity(priceValidationMessage);
-  +price.value < +price.min ? setColor(priceLabel, 'red') : setColor(priceLabel, 'inherit');
+  if (+price.value < +price.min) {
+    setColor(priceLabel, 'red');
+    const priceValidationMessage = `Для типа '${type.selectedOptions[0].innerText}' цена от ${price.min} руб.`;
+    price.setCustomValidity(priceValidationMessage);
+  } else {
+    price.setCustomValidity('');
+    setColor(priceLabel, 'inherit');
+  }
 }
 
 if (!price.min) validatePrice();
