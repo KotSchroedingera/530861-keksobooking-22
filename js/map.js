@@ -32,7 +32,7 @@ deactivateApp();
 const mapInitialState = {
   x: 35.685143,
   y: 139.751796,
-  zoom: 12,
+  zoom: 8,
 }
 
 const map = L.map('map-canvas')
