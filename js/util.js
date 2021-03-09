@@ -71,6 +71,10 @@ const removeNodeIfEmpty = (parent, selector, contentArray) => {
   }
 }
 
+const setColor = (elem, color) => {
+  elem.style.color = color;
+}
+
 export {
   getRandomIntInclusive,
   getRandomFloat,
@@ -80,6 +84,7 @@ export {
   fillArray,
   changeElementContent,
   isArrayEmpty,
-  removeNodeIfEmpty
+  removeNodeIfEmpty,
+  setColor
 };
 
