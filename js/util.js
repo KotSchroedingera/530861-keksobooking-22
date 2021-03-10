@@ -78,15 +78,15 @@ const setColor = (elem, color) => {
 const debounce = (func, wait, immediate) => {
   let timeout;
   return () => {
-    let context = this, args = arguments;
+    let context = this;
     let later = () => {
       timeout = null;
-      if (!immediate) func.apply(context, args);
+      if (!immediate) func.apply(context);
     };
     let callNow = immediate && !timeout;
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
-    if (callNow) func.apply(context, args);
+    if (callNow) func.apply(context);
   };
 };
 
