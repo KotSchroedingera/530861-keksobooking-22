@@ -2,6 +2,7 @@
 
 import { adForm, blockForm, mapFilters, pinIcon, map } from './map.js';
 import { createApartmentsHTML } from './create-offers.js';
+import { debounce } from './util.js'
 
 const OFFERS_AMOUNT = 10;
 
@@ -54,57 +55,45 @@ if (!adForm.classList.contains('ad-form--disabled')) {
         'parking',
         'conditioner',
         'washer',
-      ]
-      mapFilters.addEventListener('change', () => {
+      ];
+      const applyFilters = () => {
         markersLayer.remove();
-        const filteredJSON = json.map(elem => {
-          elem.isAppropriate = true;
-          return elem;
-        });
-        const isFilterActive = (filterName => {
+        const isFilterActive = filterName => {
           return (filterName.value !== FILTER_ANY_ID);
-        });
-        if (isFilterActive(type)) {
-          filteredJSON.forEach(elem => {
-            if (elem.offer.type !== type.value) {
-              elem.isAppropriate = false;
-            }
-          });
-        }
-        if (isFilterActive(price)) {
-          filteredJSON.forEach(elem => {
+        };
+        const filterOffers = elem => {
+          if (isFilterActive(type)) {
+            if (elem.offer.type !== type.value) return false;
+          }
+          if (isFilterActive(price)) {
             switch (price.value) {
               case 'low':
-                if (elem.offer.price > prices.low.max) elem.isAppropriate = false;
+                if (elem.offer.price > prices.low.max) return false;
                 break;
               case 'middle':
-                if ((elem.offer.price < prices.middle.min) || (elem.offer.price > prices.middle.max)) elem.isAppropriate = false;
+                if ((elem.offer.price < prices.middle.min) || (elem.offer.price > prices.middle.max)) return false;
                 break;
               case 'high':
-                if (elem.offer.price < prices.high.min) elem.isAppropriate = false;
+                if (elem.offer.price < prices.high.min) return false;
                 break;
             }
-          });
-        }
-        if (isFilterActive(rooms)) {
-          filteredJSON.forEach(elem => {
-            if (elem.offer.rooms.toString() !== rooms.value) elem.isAppropriate = false;
-          });
-        }
-        if (isFilterActive(guests)) {
-          filteredJSON.forEach(elem => {
-            if (elem.offer.guests.toString() !== guests.value) elem.isAppropriate = false;
-          });
-        }
-        features.forEach(filterValue => {
-          if (document.querySelector(`#filter-${filterValue}`).checked) {
-            filteredJSON.forEach(elem => {
-              if (!elem.offer.features.some(feature => feature === filterValue)) elem.isAppropriate = false;
-            });
           }
-        });
-        addMarkers(filteredJSON.filter(elem => elem.isAppropriate === true));
-      });
+          if (isFilterActive(rooms)) {
+            if (elem.offer.rooms.toString() !== rooms.value) return false;
+          }
+          if (isFilterActive(guests)) {
+            if (elem.offer.guests.toString() !== guests.value) return false;
+          }
+          for (let filterValue of features) {
+            if (document.querySelector(`#filter-${filterValue}`).checked) {
+              if (!elem.offer.features.includes(filterValue)) return false;
+            }
+          }
+          return true;
+        }
+        addMarkers(json.filter(filterOffers));
+      }
+      mapFilters.addEventListener('change', debounce(applyFilters, 500));
     })
     .catch(err => {
       const errorHTML = `<div style="

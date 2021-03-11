@@ -75,6 +75,21 @@ const setColor = (elem, color) => {
   elem.style.color = color;
 }
 
+const debounce = (func, wait, immediate) => {
+  let timeout;
+  return () => {
+    let context = this;
+    let later = () => {
+      timeout = null;
+      if (!immediate) func.apply(context);
+    };
+    let callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (callNow) func.apply(context);
+  };
+};
+
 export {
   getRandomIntInclusive,
   getRandomFloat,
@@ -85,6 +100,7 @@ export {
   changeElementContent,
   isArrayEmpty,
   removeNodeIfEmpty,
-  setColor
+  setColor,
+  debounce
 };
 
