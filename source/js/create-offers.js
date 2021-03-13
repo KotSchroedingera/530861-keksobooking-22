@@ -19,21 +19,14 @@ const createApartmentsHTML = apartmentsArray => {
     changeElementContent(offer, '.popup__description', apartment.offer.description);
     changeElementContent(offer, '.popup__avatar', apartment.author.avatar, 'src');
 
-    const typeElement = offer.querySelector('.popup__type');
-    switch (apartment.offer.type) {
-      case 'flat':
-        typeElement.textContent = 'Квартира';
-        break;
-      case 'bungalow':
-        typeElement.textContent = 'Бунгало';
-        break;
-      case 'house':
-        typeElement.textContent = 'Дом';
-        break;
-      case 'palace':
-        typeElement.textContent = 'Дворец';
-        break;
+    const types = {
+      'flat' : 'Квартира',
+      'bungalow' : 'Бунгало',
+      'house' : 'Дом',
+      'palace' : 'Дворец',
     }
+    const typeElement = offer.querySelector('.popup__type');
+    typeElement.textContent = types[apartment.offer.type];
 
     removeNodeIfEmpty(offer, '.popup__features', apartment.offer.features);
     if (offer.querySelector('.popup__features')) {
@@ -42,32 +35,8 @@ const createApartmentsHTML = apartmentsArray => {
       apartment.offer.features.forEach(feature => {
         const featuresItem = document.createElement('li');
         featuresItem.classList.add('popup__feature');
-        switch (feature) {
-          case 'wifi':
-            featuresItem.classList.add('popup__feature--wifi');
-            featuresList.appendChild(featuresItem);
-            break;
-          case 'dishwasher':
-            featuresItem.classList.add('popup__feature--dishwasher');
-            featuresList.appendChild(featuresItem);
-            break;
-          case 'parking':
-            featuresItem.classList.add('popup__feature--parking');
-            featuresList.appendChild(featuresItem);
-            break;
-          case 'washer':
-            featuresItem.classList.add('popup__feature--washer');
-            featuresList.appendChild(featuresItem);
-            break;
-          case 'elevator':
-            featuresItem.classList.add('popup__feature--elevator');
-            featuresList.appendChild(featuresItem);
-            break;
-          case 'conditioner':
-            featuresItem.classList.add('popup__feature--conditioner');
-            featuresList.appendChild(featuresItem);
-            break;
-        }
+        featuresItem.classList.add(`popup__feature--${feature}`);
+        featuresList.appendChild(featuresItem);
       });
     }
 
