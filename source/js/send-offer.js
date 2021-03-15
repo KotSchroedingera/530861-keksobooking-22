@@ -7,6 +7,11 @@ const resetApp = () => {
   mapFilters.reset();
   mainPin.setLatLng([mapInitialState.x, mapInitialState.y]);
   address.value = `${mapInitialState.x.toFixed(5)}, ${mapInitialState.y.toFixed(5)}`;
+  const avatar = document.querySelector('.ad-form-header__preview img');
+  avatar.src = 'img/muffin-grey.svg';
+  const photos = document.querySelector('.ad-form__photo');
+  photos.innerHTML = '';
+  photos.style = '';
 }
 
 document.querySelector('.ad-form__reset').addEventListener('click', evt => {
@@ -18,7 +23,7 @@ const showMessage = (id, closeButton) => {
   const messageTemplate = document.querySelector(`#${id}`).content;
   const message = messageTemplate.cloneNode(true);
   document.querySelector('main').append(message);
-  
+
   const messageShown = document.querySelector(`.${id}`);
   document.addEventListener('keyup', evt => {
     if (evt.key === 'Escape') messageShown.remove();
