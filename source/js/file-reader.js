@@ -3,7 +3,9 @@
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const checkFile = (file, types) => {
   for (let type of types) {
-    if (file.name.match(type)) return true;
+    if (file.name.match(type)) {
+      return true
+    }
   }
   return false;
 }

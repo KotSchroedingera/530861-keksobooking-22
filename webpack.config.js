@@ -9,5 +9,5 @@ module.exports = {
       filename: 'main.bundle.js',
     },
     devtool: 'source-map',
-    mode: 'production',
+    mode: 'development',
 }

@@ -26,7 +26,9 @@ const showMessage = (id, closeButton) => {
 
   const messageShown = document.querySelector(`.${id}`);
   document.addEventListener('keyup', evt => {
-    if (evt.key === 'Escape') messageShown.remove();
+    if (evt.key === 'Escape') {
+      messageShown.remove();
+    }
   });
   document.addEventListener('click', () => {
     messageShown.remove();

@@ -30,7 +30,9 @@ const validatePrice = () => {
     setColor(priceLabel, VALID_LABEL_COLOR);
   }
 }
-if (!price.min) validatePrice();
+if (!price.min) {
+  validatePrice();
+}
 type.addEventListener('change', () => validatePrice());
 price.addEventListener('input', () => validatePrice());
 
