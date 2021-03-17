@@ -4,6 +4,9 @@ import { setColor } from './util.js';
 
 const INVALID_LABEL_COLOR = 'red';
 const VALID_LABEL_COLOR = 'inherit';
+const TITLE_MIN_LENGTH = 30;
+const TITLE_MAX_LENGTH = 100;
+const MAX_PRICE = 1000000;
 
 const type = document.querySelector('#type');
 const price = document.querySelector('#price');
@@ -14,7 +17,6 @@ const pricesList = {
   'house' : 5000,
   'palace' : 10000,
 }
-const MAX_PRICE = 1000000;
 const validatePrice = () => {
   for (let key in pricesList) {
     if (key === type.value) {
@@ -45,8 +47,6 @@ timeout.addEventListener('change', () => {
   timein.value = timeout.value;
 });
 
-const TITLE_MIN_LENGTH = 30;
-const TITLE_MAX_LENGTH = 100;
 const title = document.querySelector('#title');
 const titleLabel = document.querySelector('.ad-form__label[for="title"]');
 const validateTitle = () => {

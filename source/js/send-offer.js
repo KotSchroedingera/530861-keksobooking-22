@@ -23,21 +23,33 @@ const showMessage = (id, closeButton) => {
   const messageTemplate = document.querySelector(`#${id}`).content;
   const message = messageTemplate.cloneNode(true);
   document.querySelector('main').append(message);
-
   const messageShown = document.querySelector(`.${id}`);
-  document.addEventListener('keyup', evt => {
-    if (evt.key === 'Escape') {
-      messageShown.remove();
-    }
-  });
-  document.addEventListener('click', () => {
+
+  const removeMessage = () => {
     messageShown.remove();
-  });
-  if (closeButton) {
-    document.querySelector(`.${id}__button`).addEventListener('click', () => {
-      messageShown.remove();
-    });
+    document.removeEventListener('keyup', onWindowEscapePress);
+    document.removeEventListener('click', onWindowClick);
+    if (closeButton) {
+      document.querySelector(`.${id}__button`).removeEventListener('click', onCloseButtonClick);
+    }
   }
+  const onWindowEscapePress = evt => {
+    if (evt.key === 'Escape') {
+      removeMessage();
+    }
+  }
+  const onWindowClick = () => {
+    removeMessage();
+  }
+  const onCloseButtonClick = () => {
+    removeMessage();
+  }
+  document.addEventListener('keyup', onWindowEscapePress);
+  document.addEventListener('click', onWindowClick);
+  if (closeButton) {
+    document.querySelector(`.${id}__button`).addEventListener('click', onCloseButtonClick);
+  }
+
 }
 
 adForm.addEventListener('submit', evt => {
